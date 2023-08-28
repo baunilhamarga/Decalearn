@@ -1,2 +1,2 @@
-# decalearn
+# DecaLearn
 Machine learning research DecaLearn
