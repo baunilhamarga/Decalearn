@@ -22,14 +22,14 @@ setting_names = ['setting_1', 'setting_2', 'setting_3']
 sensor_names = ['s_{}'.format(i+1) for i in range(0,21)]
 col_names = index_names + setting_names + sensor_names
 
-dftrain = pd.read_csv('./CMaps/train_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
-dfvalid = pd.read_csv('./CMaps/test_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
-y_valid = pd.read_csv('./CMaps/RUL_FD001.txt',sep='\s+',header=None,index_col=False,names=['RUL'])
+dftrain = pd.read_csv('Cmaps/train_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
+dfvalid = pd.read_csv('Cmaps/test_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
+y_valid = pd.read_csv('Cmaps/RUL_FD001.txt',sep='\s+',header=None,index_col=False,names=['RUL'])
 dfvalid.shape
 
-dftrain = pd.read_csv('./CMaps/train_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
-dfvalid = pd.read_csv('./CMaps/test_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
-y_valid = pd.read_csv('./CMaps/RUL_FD001.txt',sep='\s+',header=None,index_col=False,names=['RUL'])
+dftrain = pd.read_csv('Cmaps/train_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
+dfvalid = pd.read_csv('Cmaps/test_FD001.txt',sep='\s+',header=None,index_col=False,names=col_names)
+y_valid = pd.read_csv('Cmaps/RUL_FD001.txt',sep='\s+',header=None,index_col=False,names=['RUL'])
 dfvalid.shape
 
 train = dftrain.copy()
@@ -78,9 +78,9 @@ X_test.drop(columns=['RUL'], inplace=True)
 X_train_s=scaler.fit_transform(X_train)
 X_test_s=scaler.fit_transform(X_test)
 #Conserve only the last occurence of each unit to match the length of y_valid
-X_valid = valid.groupby('unit_number').last().reset_index().drop(columns=drop_labels)
-#scaling X_valid
-X_valid_s=scaler.fit_transform(X_valid)
+X_val = valid.groupby('unit_number').last().reset_index().drop(columns=drop_labels)
+#scaling X_val
+X_val_s=scaler.fit_transform(X_val)
 
-np.savez_compressed('data_nasa', X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)
+np.savez_compressed('data_nasa', X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, X_val=X_val)
 #data = np.load('data_nasa.npz')
