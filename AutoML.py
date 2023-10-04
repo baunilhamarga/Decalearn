@@ -14,12 +14,13 @@ from tensorflow.keras import layers
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('<>.npz')
+    tmp = np.load('Nasa predictive Maintenance (RUL)/data_nasa.npz')
 
-    X_train = tmp['x_train']
+    X_train = tmp['X_train']
     y_train = tmp['y_train']
-    X_test = tmp['x_test']
+    X_test = tmp['X_test']
     y_test = tmp['y_test']
+    X_val = tmp['X_val']
 
     n_classes = len(np.unique(y_train))
 

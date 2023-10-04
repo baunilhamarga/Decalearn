@@ -5,13 +5,15 @@ from sklearn import preprocessing
 from sklearn.decomposition import PCA
 from pprint import pprint
 import autosklearn.classification
+from fedot.api.main import Fedot
+
 
 
 
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('<>.npz')
+    tmp = np.load('Nasa predictive Maintenance (RUL)/data_nasa.npz')
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
