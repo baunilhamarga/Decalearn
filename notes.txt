@@ -1,0 +1,1 @@
+dropar colunas sem correlação antes ou depois da geração do npz? sim, mas não investigar muito.
