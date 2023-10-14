@@ -175,7 +175,7 @@ if __name__ == '__main__':
 		look_back = 3
 
 	#load dataset
-	series = read_csv('Chinese_cumulative_oil.csv', header=0,parse_dates=[0],index_col=0, squeeze=True)
+	series = read_csv('cumulative_oil(indian).csv', header=0,parse_dates=[0],index_col=0, squeeze=True)
 
 	raw_values = series.values
 	# transform data to be stationary
