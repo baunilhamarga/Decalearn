@@ -78,7 +78,7 @@ def Transformer(input_shape, projection_dim, num_heads, n_classes):
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('osha_train_test.npz')
+    tmp = np.load('osha_hub_100_train_test.npz')
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
