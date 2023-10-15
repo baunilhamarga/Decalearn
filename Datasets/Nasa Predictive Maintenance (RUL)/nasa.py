@@ -17,6 +17,34 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
 
+def scale_data(X_train, X_test, X_val):
+    """
+    Scale the input data using Min-Max scaling.
+
+    Parameters:
+    - X_train: Training data array.
+    - X_test: Testing data array.
+    - X_val: Validation data array.
+
+    Returns:
+    - X_train_s: Scaled training data.
+    - X_test_s: Scaled testing data.
+    - X_val_s: Scaled validation data.
+    """
+    # Create a MinMaxScaler instance
+    scaler = MinMaxScaler()
+
+    # Fit and transform the training data
+    X_train_s = scaler.fit_transform(X_train)
+
+    # Transform the testing data (use the same scaling parameters as the training data)
+    X_test_s = scaler.transform(X_test)
+
+    # Transform the validation data (use the same scaling parameters as the training data)
+    X_val_s = scaler.transform(X_val)
+
+    return X_train_s, X_test_s, X_val_s
+
 def preprocess_and_save_data(file_name = 'data_nasa', scale = False):
     """
     Imports NASA RUL data, preprocesses it by removing unnecessary features and stores it in an .npz file.
@@ -73,35 +101,6 @@ def preprocess_and_save_data(file_name = 'data_nasa', scale = False):
 
     # Save the compressed data
     np.savez_compressed(file_name, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, X_val=X_val, y_val=y_val)
-
-
-def scale_data(X_train, X_test, X_val):
-    """
-    Scale the input data using Min-Max scaling.
-
-    Parameters:
-    - X_train: Training data array.
-    - X_test: Testing data array.
-    - X_val: Validation data array.
-
-    Returns:
-    - X_train_s: Scaled training data.
-    - X_test_s: Scaled testing data.
-    - X_val_s: Scaled validation data.
-    """
-    # Create a MinMaxScaler instance
-    scaler = MinMaxScaler()
-
-    # Fit and transform the training data
-    X_train_s = scaler.fit_transform(X_train)
-
-    # Transform the testing data (use the same scaling parameters as the training data)
-    X_test_s = scaler.transform(X_test)
-
-    # Transform the validation data (use the same scaling parameters as the training data)
-    X_val_s = scaler.transform(X_val)
-
-    return X_train_s, X_test_s, X_val_s
 
 
 if __name__ == '__main__':
