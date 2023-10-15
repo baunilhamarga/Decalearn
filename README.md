@@ -9,6 +9,6 @@ Machine learning research DecaLearn
 - [Biomedical Images](https://medmnist.com/)
 ## Regression
 - [AirBnBNY](https://www.kaggle.com/datasets/dgomonov/new-york-city-airbnb-open-data/data) (Kaggle)
-- [NASA](https://www.kaggle.com/code/wassimderbel/nasa-predictive-maintenance-rul) (Kaggle)
-- SSH
+- [NASA RUL](https://www.kaggle.com/code/wassimderbel/nasa-predictive-maintenance-rul) (Kaggle)
+- [SSH](https://link.springer.com/chapter/10.1007/978-3-031-45368-7_1)
 - [Oil Prediction](https://github.com/2M-kotb/DLSTM2/tree/master) ([Paper](https://www.sciencedirect.com/science/article/pii/S0925231218311639))
