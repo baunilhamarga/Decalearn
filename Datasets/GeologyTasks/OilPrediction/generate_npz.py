@@ -1,34 +1,20 @@
 import numpy as np
-import tensorflow as tf
 import random as rn
 import numpy as np
 
 import os
 
-from pandas import DataFrame
 from pandas import Series
-from pandas import concat
 from pandas import read_csv
-from pandas import datetime
-from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import MinMaxScaler
-from keras.models import Sequential
-from keras.layers import Dense,Dropout
-from keras.layers import LSTM
-from keras.optimizers import Adam
-from keras import regularizers
-from keras.constraints import max_norm
-from math import sqrt
-from matplotlib import pyplot
-import matplotlib.pyplot as plt
+
 import numpy as np
-from numpy import concatenate
 import warnings
 warnings.filterwarnings('ignore')
 
-
-def parser(x):
-	return datetime.strptime(x, '%Y%m')
+import sys
+sys.path.append('../../..')
+from Scripts import statistics
 
 # Create a differenced series
 def difference(dataset, interval=1):
@@ -125,3 +111,5 @@ if __name__ == '__main__':
 	# Load dataset
 	series = read_csv("cumulative_oil(indian).csv", header=0,parse_dates=[0],index_col=0, squeeze=True)
 	generate_npz(series)
+	data = np.load('cumulative_oil(indian).npz')
+	statistics.print_statistics(data)
