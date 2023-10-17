@@ -17,6 +17,11 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
 
+import sys
+sys.path.append('../..')
+from Scripts import statistics
+
+
 def scale_data(X_train, X_test, X_val):
     """
     Scale the input data using Min-Max scaling.
@@ -106,7 +111,4 @@ def preprocess_and_save_data(file_name = 'data_nasa', scale = False):
 if __name__ == '__main__':
     preprocess_and_save_data()
     data_nasa = np.load('data_nasa.npz')
-    print(data_nasa['X_train'])
-    preprocess_and_save_data(scale=True)
-    data_nasa = np.load('data_nasa_scaled.npz')
-    print(data_nasa['X_train'])
+    statistics.print_statistics(data_nasa)
