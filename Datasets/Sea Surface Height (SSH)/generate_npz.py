@@ -63,22 +63,26 @@ def create_dataset(dataset, look_back=1):
 	return dataset
 
 def generate_npz(series, look_back=5, file_name="SSH", stationary=False, scaled=False, check_content=False):
-	raw_values = series.values
+	train = read_csv("metocean_data_train.csv", header=0,parse_dates=[0],index_col=0, squeeze=True)
+	test = read_csv("metocean_data_test.csv", header=0,parse_dates=[0],index_col=0, squeeze=True)
+	# Drop wind_speed feature
+	train=train.drop(columns=['wind_speed'])
+	test=test.drop(columns=['wind_speed'])
+
+	train_raw_values = train.values
+	test_raw_values = test.values
 
 	# Transform data to be stationary or use raw values
 	if stationary:
-		data = difference(raw_values, 1).values
+		train = difference(train_raw_values, 1).values
+		test = difference(test_raw_values, 1).values
 		file_name += "_stationary"
 	else:
-		data = raw_values
+		train, test = train_raw_values, test_raw_values
 
 	# Create dataset
-	dataset = create_dataset(data, look_back)
-
-	# Split into train and test sets
-	train_size = int(dataset.shape[0] * 0.7)
-	test_size = dataset.shape[0] - train_size
-	train, test = dataset[0:train_size], dataset[train_size:]
+	train = create_dataset(train, look_back)
+	test = create_dataset(test, look_back)
 
 	# Transform the scale of the data
 	if scaled:
@@ -110,6 +114,6 @@ def generate_npz(series, look_back=5, file_name="SSH", stationary=False, scaled=
 if __name__ == '__main__':
 	# Load dataset
 	series = read_csv("metocean_data_train.csv", header=0,parse_dates=[0],index_col=0, squeeze=True)
-	generate_npz(series)
+	generate_npz(series, stationary=True)
 	data = np.load('SSH.npz')
 	statistics.print_statistics(data, check_content=True)

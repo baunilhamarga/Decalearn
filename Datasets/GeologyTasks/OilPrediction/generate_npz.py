@@ -110,6 +110,6 @@ def generate_npz(series, look_back=5, file_name="cumulative_oil(indian)", statio
 if __name__ == '__main__':
 	# Load dataset
 	series = read_csv("cumulative_oil(indian).csv", header=0,parse_dates=[0],index_col=0, squeeze=True)
-	generate_npz(series)
-	data = np.load('cumulative_oil(indian).npz')
+	generate_npz(series, stationary=True, check_content=True)
+	data = np.load('cumulative_oil(indian)_stationary.npz')
 	statistics.print_statistics(data)

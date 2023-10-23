@@ -14,8 +14,8 @@ import tensorflow as tf
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('../Datasets/Sea Surface Height (SSH)/SSH.npz')
-    custom_project_name = 'AutoSklearn/SSH'
+    tmp = np.load('../Datasets/GeologyTasks/OilPrediction/cumulative_oil(indian)_stationary.npz', allow_pickle=True)
+    custom_project_name = 'AutoSklearn/cumulative_oil(indian)_stationary'
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
