@@ -1,5 +1,10 @@
 .~lock.*#
 
+# Auto MLs results
+AutoMLs/AutoSklearn/
+AutoMLs/AutoFedot/
+AutoMLs/AutoKeras/
+
 # VScode
 .vscode
 
