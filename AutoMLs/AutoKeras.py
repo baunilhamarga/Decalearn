@@ -15,7 +15,8 @@ import tensorflow as tf
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('Nasa predictive Maintenance (RUL)/data_nasa.npz')
+    tmp = np.load('../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz')
+    custom_project_name = 'AutoKeras/UTD-MHAD2_1s'
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
@@ -33,7 +34,7 @@ if __name__ == '__main__':
     X_test = scaler.transform(X_test)
 
 
-    model = ak.StructuredDataClassifier(overwrite=True, max_trials=10)
+    model = ak.StructuredDataClassifier(overwrite=True, max_trials=10, project_name=custom_project_name)
 
     model.fit(tf.data.Dataset.from_tensor_slices((X_train.astype(str), y_train)), epochs=40)
 
