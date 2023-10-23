@@ -1,7 +1,7 @@
 import csv
 
 # Read the single-line CSV file
-with open('../personal_files/datetime_test.csv', 'r') as single_line_csv:
+with open('../personal_files/datetime_train.csv', 'r') as single_line_csv:
     reader = csv.reader(single_line_csv)
     data = next(reader)  # Read the single line of values
 
