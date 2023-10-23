@@ -111,4 +111,4 @@ def preprocess_and_save_data(file_name = 'data_nasa', scale = False):
 if __name__ == '__main__':
     preprocess_and_save_data()
     data_nasa = np.load('data_nasa.npz')
-    statistics.print_statistics(data_nasa)
+    statistics.print_statistics(data_nasa, check_content=True)
