@@ -23,8 +23,8 @@ def preprocess_data(df):
     preprocessed_data = df.drop(['id','host_name','host_id','last_review'], axis=1)
     # Replacing all NaN values in 'reviews_per_month' with 0
     preprocessed_data.fillna({'reviews_per_month':0}, inplace=True)
-    # Use get_dummies to one-hot encode the "room_type" and "neighbourhood_group" columns
-    preprocessed_data = pd.get_dummies(preprocessed_data, columns=['room_type','neighbourhood_group'], prefix=['room_type','neighbourhood_group'])
+    # Use get_dummies to one-hot encode the "room_type", "neighbourhood_group" and 'neighbourhood' columns
+    preprocessed_data = pd.get_dummies(preprocessed_data, columns=['room_type','neighbourhood_group','neighbourhood'], prefix=['room_type','neighbourhood_group','neighbourhood'])
     return preprocessed_data
 
 def generate_npz(dataset, file_name="AB_NYC_2019", scaled=False):
