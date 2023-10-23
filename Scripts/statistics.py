@@ -12,12 +12,13 @@ def print_statistics(df, classification=False, check_content=False):
 
     if classification:
         # 'y' column in the DataFrame that represents classes (target feature)
-        num_classes = y.nunique()  # Count the number of unique classes
+        num_classes = len(np.unique(y))  # Count the number of unique classes
 
         # Calculate the minimum and maximum class sizes
-        class_sizes = X.value_counts()
-        min_class_size = class_sizes.min()
-        max_class_size = class_sizes.max()
+        unique_classes, class_counts = np.unique(y, return_counts=True)
+
+        min_class_size = class_counts.min()
+        max_class_size = class_counts.max()
 
     # Calculate train and test sizes and relative sizes
     train_size = len(y_train)
@@ -45,3 +46,7 @@ def print_statistics(df, classification=False, check_content=False):
         print("#Max class size:", max_class_size)
     print(f"Train size: {train_size} ({train_size_percentage:.0f}%)")
     print(f"Test size: {test_size} ({test_size_percentage:.0f}%)")
+
+if __name__ == '__main__':
+    data = np.load('/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz')
+    print_statistics(data, check_content=True, classification=True)
