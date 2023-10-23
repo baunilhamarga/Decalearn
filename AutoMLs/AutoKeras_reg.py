@@ -14,22 +14,19 @@ import tensorflow as tf
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('Nasa predictive Maintenance (RUL)/data_nasa.npz')
+    tmp = np.load('../Datasets/Sea Surface Height (SSH)/SSH.npz')
+    custom_project_name = 'AutoSklearn/SSH'
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
     X_test = tmp['X_test']
     y_test = tmp['y_test']
 
-    le = preprocessing.LabelBinarizer()
-    y_train = le.fit_transform(y_train)
-    y_test = le.fit_transform(y_test)
-
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    model = ak.StructuredDataRegressor(overwrite=True, max_trials=10)
+    model = ak.StructuredDataRegressor(overwrite=True, max_trials=10, project_name=custom_project_name)
 
     model.fit(tf.data.Dataset.from_tensor_slices((X_train.astype(str), y_train)), epochs=40)
 
