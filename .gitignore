@@ -1,5 +1,8 @@
 .~lock.*#
 
+# CatBoost results
+ML_methods/catboost_info/
+
 # Auto MLs results
 AutoMLs/AutoSklearn/
 AutoMLs/AutoFedot/
