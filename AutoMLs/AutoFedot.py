@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     n_classes = len(np.unique(y_train))
 
-    cls = Fedot(problem='classification', timeout=5, preset='best_quality', n_jobs=-1)
+    cls = Fedot(problem='classification', timeout=5, preset='best_quality', n_jobs=-1, seed=random_state)
     cls.fit(features=X_train, target=y_train)
     prediction = cls.predict(features=X_test)
 
