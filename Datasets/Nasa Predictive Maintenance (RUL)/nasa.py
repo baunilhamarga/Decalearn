@@ -104,8 +104,13 @@ def preprocess_and_save_data(file_name = 'data_nasa', scale = False):
         X_train, X_test, X_val = scale_data(X_train, X_test, X_val)
         file_name = 'data_nasa_scaled'
 
+    # Merge train and val
+    y_val = y_val.to_numpy().ravel()
+    X_train = np.concatenate((X_train, X_val), axis=0)
+    y_train = np.concatenate((y_train, y_val), axis=0)
+
     # Save the compressed data
-    np.savez_compressed(file_name, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, X_val=X_val, y_val=y_val)
+    np.savez_compressed(file_name, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)
 
 
 if __name__ == '__main__':

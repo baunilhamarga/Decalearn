@@ -1,12 +1,6 @@
 import numpy as np
-import random as rn
-import numpy as np
-
 from pandas import read_csv
-import sklearn
-import os
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 import numpy as np
 import pandas as pd
 
@@ -27,7 +21,7 @@ def preprocess_data(df):
     preprocessed_data = pd.get_dummies(preprocessed_data, columns=['room_type','neighbourhood_group','neighbourhood'], prefix=['room_type','neighbourhood_group','neighbourhood'])
     return preprocessed_data
 
-def generate_npz(dataset, file_name="AB_NYC_2019", scaled=False):
+def generate_npz(dataset, file_name="AB_NYC_2019"):
 
     # Split data
     X_train, X_test, y_train, y_test = train_test_split(dataset, dataset['price'], test_size=0.3, random_state=12227)
@@ -37,7 +31,7 @@ def generate_npz(dataset, file_name="AB_NYC_2019", scaled=False):
 
 if __name__ == '__main__':
     # Load dataset
-    dataset= read_csv("AB_NYC_2019.csv", header=0,parse_dates=[0])
+    dataset = read_csv("AB_NYC_2019.csv", header=0,parse_dates=[0])
     preprocessed_data = preprocess_data(dataset)
     generate_npz(preprocessed_data)
     data = np.load('AB_NYC_2019.npz', allow_pickle=True)

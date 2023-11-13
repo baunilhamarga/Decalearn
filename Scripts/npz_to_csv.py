@@ -3,7 +3,7 @@ import csv
 
 if __name__ == '__main__':
     # Replace 'your_data.npz' with the actual path to your .npz file.
-    npz_file = np.load('activity_recognition/ssh_praticagem.npz')
+    npz_file = np.load('/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz')
 
     # Loop through the keys in the .npz file and save each array as a separate CSV file.
     for key in npz_file.keys():

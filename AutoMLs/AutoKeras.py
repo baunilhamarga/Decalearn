@@ -15,7 +15,7 @@ import tensorflow as tf
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz')
+    tmp = np.load('/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz')
     custom_project_name = 'AutoKeras/UTD-MHAD2_1s'
 
     X_train = tmp['X_train']
@@ -42,4 +42,4 @@ if __name__ == '__main__':
 
     acc_test = accuracy_score(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1))
 
-    print('Testing Accuracy before Pruning [{:.4f}]'.format(acc_test))
+    print('Testing Accuracy [{:.4f}]'.format(acc_test))

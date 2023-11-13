@@ -14,14 +14,15 @@ from tensorflow.keras import layers
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('Nasa predictive Maintenance (RUL)/data_nasa_scaled.npz')
+    dataset_filepath = '/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz'
+    tmp = np.load(dataset_filepath)
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
     X_test = tmp['X_test']
     y_test = tmp['y_test']
-    X_val = tmp['X_val']
-    y_val = tmp['y_val']
+    X_val = tmp['X_train']
+    y_val = tmp['y_train']
 
     n_classes = len(np.unique(y_train))
 
@@ -29,6 +30,7 @@ if __name__ == '__main__':
     'classifier': ["adaboost", "decision_tree", "extra_trees", "gradient_boosting", "lda", "qda", "random_forest", "sgd"],
     'feature_preprocessor': ["no_preprocessing"]
     }
+
 
     cls = autosklearn.classification.AutoSklearnClassifier(time_left_for_this_task=54000, include=include)
     cls.fit(X_train, y_train, X_test=X_val, y_test=y_val)
