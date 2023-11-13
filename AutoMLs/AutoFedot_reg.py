@@ -3,11 +3,13 @@ from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from pprint import pprint
 from fedot.api.main import Fedot
+import warnings
+warnings.filterwarnings('ignore')
 
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('../Datasets/Nasa Predictive Maintenance (RUL)/data_nasa.npz')
+    tmp = np.load('/home/baunilha/Repositories/Decalearn/Datasets/Nasa Predictive Maintenance (RUL)/data_nasa.npz')
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
