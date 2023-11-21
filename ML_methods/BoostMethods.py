@@ -304,4 +304,4 @@ if __name__ == '__main__':
         run_LightGBoost(file_path, X_train, y_train, X_test, y_test)
 
         # Run CatBoost
-        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=False, timeout_seconds=10)
+        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeout_seconds=10)
