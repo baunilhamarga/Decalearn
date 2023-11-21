@@ -1,5 +1,8 @@
 .~lock.*#
 
+# Scripts .csv outputs
+Scripts/*.csv
+
 # CatBoost results
 ML_methods/catboost_info/
 
