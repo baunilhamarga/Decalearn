@@ -33,43 +33,35 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
             for subsample in [0.2, 1]:
                 for colsample_bytree in [0.2, 1]:
                     for colsample_bylevel in [0.2, 1]:
-                        for min_child_weight in np.logspace(-16, 5, 22):
-                            for alpha in np.logspace(-16, 2, 19):
-                                for lambd in np.logspace(-16, 2, 19):
-                                    for gamma in np.logspace(-16, 2, 19):
-                                        for n_estimators in [100, 4000]:
-                                            parameters = {'learning_rate': learning_rate,
-                                                          'max_depth': max_depth,
-                                                          'subsample': subsample,
-                                                          'colsample_bytree': colsample_bytree,
-                                                          'colsample_bylevel': colsample_bylevel,
-                                                          'min_child_weight': min_child_weight,
-                                                          'alpha': alpha,
-                                                          'lambda': lambd,
-                                                          'gamma': gamma,
-                                                          'n_estimators': n_estimators,
-                                                          'verbosity': 0,
-                                                          'random_state': random_state}
-                                            model = XGBClassifier(**parameters)
-                                            model.fit(X_train, y_train)
-                                            acc_val = accuracy_score(y_val, model.predict(X_val))
-                                            parameters_acc_list.append((parameters, acc_val))
+                        for n_estimators in [100, 4000]:
+                            parameters = {'learning_rate': learning_rate,
+                                            'max_depth': max_depth,
+                                            'subsample': subsample,
+                                            'colsample_bytree': colsample_bytree,
+                                            'colsample_bylevel': colsample_bylevel,
+                                            'n_estimators': n_estimators,
+                                            'verbosity': 0,
+                                            'random_state': random_state}
+                            model = XGBClassifier(**parameters)
+                            model.fit(X_train, y_train)
+                            acc_val = accuracy_score(y_val, model.predict(X_val))
+                            parameters_acc_list.append((parameters, acc_val))
 
-                                            # Check timeout
-                                            elapsed_time = time.time() - start_time
-                                            if timeout and elapsed_time > timeout_seconds:
-                                                # Find the tuple with the maximum accuracy
-                                                best_parameters, best_accuracy = max(parameters_acc_list, key=lambda x: x[1])
+                            # Check timeout
+                            elapsed_time = time.time() - start_time
+                            if timeout and elapsed_time > timeout_seconds:
+                                # Find the tuple with the maximum accuracy
+                                best_parameters, best_accuracy = max(parameters_acc_list, key=lambda x: x[1])
 
-                                                end_time = time.time()  # Record end time
-                                                elapsed_time = end_time - start_time
+                                end_time = time.time()  # Record end time
+                                elapsed_time = end_time - start_time
 
-                                                print(f"Number of parameters processed: {len(parameters_acc_list)}/{total_params}")
-                                                print("Timeout reached. Returning best parameters found so far.")
-                                                print("Best Parameters:", best_parameters)
-                                                print("Best Accuracy:", best_accuracy)
-                                                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s")
-                                                return max(parameters_acc_list, key=lambda x: x[1])[0]
+                                print(f"Number of parameters processed: {len(parameters_acc_list)}/{total_params}")
+                                print("Timeout reached. Returning best parameters found so far.")
+                                print("Best Parameters:", best_parameters)
+                                print("Best Accuracy:", best_accuracy)
+                                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s")
+                                return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
     best_parameters, best_accuracy = max(parameters_acc_list, key=lambda x: x[1])
@@ -304,4 +296,4 @@ if __name__ == '__main__':
         run_LightGBoost(file_path, X_train, y_train, X_test, y_test)
 
         # Run CatBoost
-        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=False, timeout_seconds=10)
+        run_CatBoost(file_path, X_train, y_train, X_test, y_test)
