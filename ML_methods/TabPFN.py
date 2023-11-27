@@ -108,10 +108,13 @@ def run_tabpfn(file_path, X_train, y_train, X_test, y_test, default=True, timeou
 
 if __name__ == '__main__':
     file_paths = [
-        '/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
-        '/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        #'/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
+        #'/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        #'/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/USCHAD.npz',
+        #'/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/WHARF.npz',
+        '/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD1_1s.npz',
     ]
     for file_path in file_paths:
         X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=True, coreset_size=1024)
-        run_tabpfn(file_path, X_train, y_train, X_test, y_test, default=False, timeout=False, verbose=True, timeout_seconds=10)
+        run_tabpfn(file_path, X_train, y_train, X_test, y_test, default=True, timeout=False, verbose=True, timeout_seconds=10)
 
