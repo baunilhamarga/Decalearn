@@ -39,7 +39,7 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
                         'subsample': [0.2, 1],
                         'colsample_bytree': [0.2, 1],
                         'colsample_bylevel': [0.2, 1],
-                        #'min_child_weight': np.logspace(-16, 5, 22),
+                        'min_child_weight': np.logspace(-16, 5, 22),
                         #'alpha': np.logspace(-16, 2, 19),
                         #'lambda': np.logspace(-16, 2, 19),
                         #'gamma': np.logspace(-16, 2, 19),
@@ -69,12 +69,13 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
 
             end_time = time.time()  # Record end time
             elapsed_time = end_time - start_time
-
-            print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}")
-            print("Timeout reached. Returning best parameters found so far.")
-            print("Best Parameters:", best_parameters)
-            print("Best Accuracy:", best_accuracy)
-            print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s")
+            # Open a file for writing other outputs
+            with open('logs/parameters.txt', 'a') as file:
+                print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}", file=file)
+                print("Timeout reached. Returning best parameters found so far.", file=file)
+                print("Best Parameters:", best_parameters, file=file)
+                print("Best Accuracy:", best_accuracy, file=file)
+                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s", file=file)
             return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
@@ -82,10 +83,11 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
 
     end_time = time.time()  # Record end time
     elapsed_time = end_time - start_time
-
-    print("Best Parameters:", best_parameters)
-    print("Best Accuracy:", best_accuracy)
-    print(f"Time elapsed to find Best Parameters: {elapsed_time}s")
+    # Open a file for writing other outputs
+    with open('logs/parameters.txt', 'a') as file:
+        print("Best Parameters:", best_parameters, file=file)
+        print("Best Accuracy:", best_accuracy, file=file)
+        print(f"Time elapsed to find Best Parameters: {elapsed_time}s", file=file)
 
     return best_parameters
 
@@ -219,6 +221,8 @@ def run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeo
     if default:
         best_parameters = {'random_state': random_state}
     else:
+        with open('logs/parameters.txt', 'a') as file:
+            print(f"Finding best parameters for XGBoost on {file_name}...", file=file)
         best_parameters = choose_parameters_XGBoost(X_train, y_train, timeout=timeout, timeout_seconds=timeout_seconds, verbose=verbose)
 
     model = XGBClassifier(**best_parameters)
@@ -298,8 +302,8 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
 if __name__ == '__main__':
     # Insert the file paths of classification datasets
     file_paths = [
-        #'/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
-        '/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        '../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
+        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
     ]
 
     for file_path in file_paths:
