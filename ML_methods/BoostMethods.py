@@ -69,6 +69,7 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
 
             end_time = time.time()  # Record end time
             elapsed_time = end_time - start_time
+
             # Open a file for writing other outputs
             with open('logs/parameters.txt', 'a') as file:
                 print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}", file=file)
@@ -83,6 +84,7 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
 
     end_time = time.time()  # Record end time
     elapsed_time = end_time - start_time
+
     # Open a file for writing other outputs
     with open('logs/parameters.txt', 'a') as file:
         print("Best Parameters:", best_parameters, file=file)
@@ -134,11 +136,13 @@ def choose_parameters_LightGBM(X_train, y_train, timeout=True, timeout_seconds=6
             end_time = time.time()  # Record end time
             elapsed_time = end_time - start_time
 
-            print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}")
-            print("Timeout reached. Returning best parameters found so far.")
-            print("Best Parameters:", best_parameters)
-            print("Best Accuracy:", best_accuracy)
-            print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s")
+            # Open a file for writing other outputs
+            with open('logs/parameters.txt', 'a') as file:
+                print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}", file=file)
+                print("Timeout reached. Returning best parameters found so far.", file=file)
+                print("Best Parameters:", best_parameters, file=file)
+                print("Best Accuracy:", best_accuracy, file=file)
+                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s", file=file)
             return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
@@ -147,9 +151,12 @@ def choose_parameters_LightGBM(X_train, y_train, timeout=True, timeout_seconds=6
     end_time = time.time()  # Record end time
     elapsed_time = end_time - start_time
 
-    print("Best Parameters:", best_parameters)
-    print("Best Accuracy:", best_accuracy)
-    print(f"Time elapsed to find Best Parameters: {elapsed_time}s")
+    # Open a file for writing other outputs
+    with open('logs/parameters.txt', 'a') as file:
+        print("Best Parameters:", best_parameters, file=file)
+        print("Best Accuracy:", best_accuracy, file=file)
+        print(f"Time elapsed to find Best Parameters: {elapsed_time}s", file=file)
+
 
     return best_parameters
 
@@ -194,11 +201,13 @@ def choose_parameters_CatBoost(X_train, y_train, timeout=True, timeout_seconds=6
             end_time = time.time()  # Record end time
             elapsed_time = end_time - start_time
 
-            print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}")
-            print("Timeout reached. Returning best parameters found so far.")
-            print("Best Parameters:", best_parameters)
-            print("Best Accuracy:", best_accuracy)
-            print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s")
+            # Open a file for writing other outputs
+            with open('logs/parameters.txt', 'a') as file:
+                print(f"\nNumber of parameters processed: {len(parameters_acc_list)}/{total_params}", file=file)
+                print("Timeout reached. Returning best parameters found so far.", file=file)
+                print("Best Parameters:", best_parameters, file=file)
+                print("Best Accuracy:", best_accuracy, file=file)
+                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s", file=file)
             return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
@@ -207,13 +216,17 @@ def choose_parameters_CatBoost(X_train, y_train, timeout=True, timeout_seconds=6
     end_time = time.time()  # Record end time
     elapsed_time = end_time - start_time
 
-    print("Best Parameters:", best_parameters)
-    print("Best Accuracy:", best_accuracy)
-    print(f"Time elapsed to find Best Parameters: {elapsed_time}s")
+    # Open a file for writing other outputs
+    with open('logs/parameters.txt', 'a') as file:
+        print("Best Parameters:", best_parameters, file=file)
+        print("Best Accuracy:", best_accuracy, file=file)
+        print(f"Time elapsed to find Best Parameters: {elapsed_time}s", file=file)
+
 
     return best_parameters
 
 def run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeout=True, timeout_seconds=60, verbose=False):
+    file_name = os.path.basename(file_path)
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
@@ -236,12 +249,11 @@ def run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeo
     end_time = time.time()  # Record end time
     elapsed_time = end_time - start_time
 
-    file_name = os.path.basename(file_path)
-
     print(f'Accuracy on {file_name} (XGBoost): {acc_test}')
     print(f'Time elapsed for {file_name} (XGBoost): {elapsed_time}s\n')
 
-def run_LightGBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeout=True, timeout_seconds=60, verbose=False):
+def run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, timeout=True, timeout_seconds=60, verbose=False):
+    file_name = os.path.basename(file_path)
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
@@ -253,6 +265,8 @@ def run_LightGBoost(file_path, X_train, y_train, X_test, y_test, default=True, t
         if default:
             best_parameters = {'verbosity': -1, 'random_state': random_state}
         else:
+            with open('logs/parameters.txt', 'a') as file:
+                print(f"Finding best parameters for LightGBM on {file_name}...", file=file)
             best_parameters = choose_parameters_LightGBM(X_train, y_train, timeout=timeout, timeout_seconds=timeout_seconds, verbose=verbose)
 
         start_time = time.time()  # Record start time
@@ -264,14 +278,11 @@ def run_LightGBoost(file_path, X_train, y_train, X_test, y_test, default=True, t
         end_time = time.time()  # Record end time
         elapsed_time = end_time - start_time
 
-        file_name = os.path.basename(file_path)
-
         print(f'Accuracy on {file_name} (LightGBM): {acc_test}')
         print(f'Time elapsed for {file_name} (LightGBM): {elapsed_time}s\n')
 
 def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeout=True, timeout_seconds=60, verbose=False):
-    n_classes = len(np.unique(y_train))
-
+    file_name = os.path.basename(file_path)
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
@@ -283,6 +294,8 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
         if default:
             best_parameters = {'verbose': 0, 'random_state': random_state}
         else:
+            with open('logs/parameters.txt', 'a') as file:
+                print(f"Finding best parameters for CatBoost on {file_name}...", file=file)
             best_parameters = choose_parameters_CatBoost(X_train, y_train, timeout=timeout, timeout_seconds=timeout_seconds, verbose=verbose)
 
         start_time = time.time()  # Record start time
@@ -293,8 +306,6 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
 
         end_time = time.time()  # Record end time
         elapsed_time = end_time - start_time
-
-        file_name = os.path.basename(file_path)
 
         print(f'Accuracy on {file_name} (CatBoost): {acc_test}')
         print(f'Time elapsed for {file_name} (CatBoost): {elapsed_time}s\n')
@@ -313,7 +324,7 @@ if __name__ == '__main__':
         run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
         
         # Run LightGBM
-        #run_LightGBoost(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
+        run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
 
         # Run CatBoost
-        #run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
+        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
