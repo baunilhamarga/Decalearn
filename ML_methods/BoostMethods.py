@@ -76,7 +76,7 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
                 print("Timeout reached. Returning best parameters found so far.", file=file)
                 print("Best Parameters:", best_parameters, file=file)
                 print("Best Accuracy:", best_accuracy, file=file)
-                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s", file=file)
+                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s\n", file=file)
             return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
@@ -89,7 +89,7 @@ def choose_parameters_XGBoost(X_train, y_train, timeout=True, timeout_seconds=60
     with open('logs/parameters.txt', 'a') as file:
         print("Best Parameters:", best_parameters, file=file)
         print("Best Accuracy:", best_accuracy, file=file)
-        print(f"Time elapsed to find Best Parameters: {elapsed_time}s", file=file)
+        print(f"Time elapsed to find Best Parameters: {elapsed_time}s\n", file=file)
 
     return best_parameters
 
@@ -99,7 +99,7 @@ def choose_parameters_LightGBM(X_train, y_train, timeout=True, timeout_seconds=6
     parameters_acc_list = []
     
     tested_params = {
-                        #'num_leaves': range(5,50),
+                        'num_leaves': range(5,50),
                         'max_depth': range(3, 20),
                         'learning_rate': np.logspace(-3, 0, 4),
                         'n_estimators': [50, 2000],
@@ -142,7 +142,7 @@ def choose_parameters_LightGBM(X_train, y_train, timeout=True, timeout_seconds=6
                 print("Timeout reached. Returning best parameters found so far.", file=file)
                 print("Best Parameters:", best_parameters, file=file)
                 print("Best Accuracy:", best_accuracy, file=file)
-                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s", file=file)
+                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s\n", file=file)
             return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
@@ -155,7 +155,7 @@ def choose_parameters_LightGBM(X_train, y_train, timeout=True, timeout_seconds=6
     with open('logs/parameters.txt', 'a') as file:
         print("Best Parameters:", best_parameters, file=file)
         print("Best Accuracy:", best_accuracy, file=file)
-        print(f"Time elapsed to find Best Parameters: {elapsed_time}s", file=file)
+        print(f"Time elapsed to find Best Parameters: {elapsed_time}s\n", file=file)
 
 
     return best_parameters
@@ -207,7 +207,7 @@ def choose_parameters_CatBoost(X_train, y_train, timeout=True, timeout_seconds=6
                 print("Timeout reached. Returning best parameters found so far.", file=file)
                 print("Best Parameters:", best_parameters, file=file)
                 print("Best Accuracy:", best_accuracy, file=file)
-                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s", file=file)
+                print(f"Time elapsed to find Best Parameters (Timeout): {elapsed_time}s\n", file=file)
             return max(parameters_acc_list, key=lambda x: x[1])[0]
 
     # Find the tuple with the maximum accuracy
@@ -220,7 +220,7 @@ def choose_parameters_CatBoost(X_train, y_train, timeout=True, timeout_seconds=6
     with open('logs/parameters.txt', 'a') as file:
         print("Best Parameters:", best_parameters, file=file)
         print("Best Accuracy:", best_accuracy, file=file)
-        print(f"Time elapsed to find Best Parameters: {elapsed_time}s", file=file)
+        print(f"Time elapsed to find Best Parameters: {elapsed_time}s\n", file=file)
 
 
     return best_parameters
@@ -250,7 +250,7 @@ def run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeo
     elapsed_time = end_time - start_time
 
     print(f'Accuracy on {file_name} (XGBoost): {acc_test}')
-    print(f'Time elapsed for {file_name} (XGBoost): {elapsed_time}s\n')
+    print(f'Time elapsed for {file_name} (XGBoost): {elapsed_time}s\n\n')
 
 def run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, timeout=True, timeout_seconds=60, verbose=False):
     file_name = os.path.basename(file_path)
@@ -279,7 +279,7 @@ def run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, time
         elapsed_time = end_time - start_time
 
         print(f'Accuracy on {file_name} (LightGBM): {acc_test}')
-        print(f'Time elapsed for {file_name} (LightGBM): {elapsed_time}s\n')
+        print(f'Time elapsed for {file_name} (LightGBM): {elapsed_time}s\n\n')
 
 def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeout=True, timeout_seconds=60, verbose=False):
     file_name = os.path.basename(file_path)
@@ -308,23 +308,24 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
         elapsed_time = end_time - start_time
 
         print(f'Accuracy on {file_name} (CatBoost): {acc_test}')
-        print(f'Time elapsed for {file_name} (CatBoost): {elapsed_time}s\n')
+        print(f'Time elapsed for {file_name} (CatBoost): {elapsed_time}s\n\n')
 
 if __name__ == '__main__':
     # Insert the file paths of classification datasets
     file_paths = [
-        '../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
-        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        #'../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
+        #'../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        '../Datasets/Lucas/osha_train_test.npz',
     ]
 
     for file_path in file_paths:
         X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=False)
         
         # Run XGBoost
-        run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
+        run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
         
         # Run LightGBM
-        run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
+        run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
 
         # Run CatBoost
-        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=False, verbose=True, timeout=False, timeout_seconds=10)
+        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
