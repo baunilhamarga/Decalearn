@@ -1,4 +1,24 @@
+Finding best parameters for XGBoost on UTD-MHAD2_1s.npz...
+Best Parameters: {'learning_rate': 0.1, 'max_depth': 10, 'subsample': 1, 'colsample_bytree': 1, 'colsample_bylevel': 1, 'min_child_weight': 1e-16, 'n_estimators': 100, 'random_state': 12227}
+Best Accuracy: 0.8875
+Time elapsed to find Best Parameters: 20388.257769823074s
+
+Finding best parameters for LightGBM on UTD-MHAD2_1s.npz...
+Best Parameters: {'num_leaves': 5, 'max_depth': 4, 'learning_rate': 0.01, 'n_estimators': 2000, 'min_child_weight': 0.023713737056616554, 'subsample': 0.2, 'verbose': -1, 'random_state': 12227}
+Best Accuracy: 0.9
+Time elapsed to find Best Parameters: 84619.29321336746s
+
+Finding best parameters for CatBoost on UTD-MHAD2_1s.npz...
+Best Parameters: {'learning_rate': 0.1, 'verbose': 0, 'random_state': 12227}
+Best Accuracy: 0.8625
+Time elapsed to find Best Parameters: 39.44200921058655s
+
 Finding best parameters for XGBoost on FaciesClassificationYananGasField.npz...
 Best Parameters: {'learning_rate': 1.0, 'max_depth': 10, 'subsample': 1, 'colsample_bytree': 1, 'colsample_bylevel': 1, 'min_child_weight': 0.001, 'n_estimators': 4000, 'random_state': 12227}
 Best Accuracy: 0.9492537313432836
 Time elapsed to find Best Parameters: 84444.14381575584s
+
+Finding best parameters for LightGBM on FaciesClassificationYananGasField.npz...
+Best Parameters: {'num_leaves': 49, 'max_depth': 7, 'learning_rate': 0.1, 'n_estimators': 2000, 'min_child_weight': 1e-05, 'subsample': 0.2, 'verbose': -1, 'random_state': 12227}
+Best Accuracy: 0.9552238805970149
+Time elapsed to find Best Parameters: 135936.3396668434s
