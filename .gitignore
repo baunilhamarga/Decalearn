@@ -3,6 +3,9 @@
 # Scripts .csv outputs
 Scripts/*.csv
 
+# Big datasets
+Datasets/CSI/dataset_csi.npz
+
 # CatBoost results
 ML_methods/catboost_info/
 
