@@ -158,7 +158,7 @@ def cs_construction_min_pairwise(data, colors, k):
         A_i = data_col[ind_col]
         ind_A_i = index_col[ind_col]
         eucld_dist_i = euclidean_distances(A_i)
-        S_i, _ = dm_min_pairwise(eucld_dist_i, sum_k)
+        S_i, _ = dm_min_pairwise(eucld_dist_i, k[ind_col])
 
         coreset_i = set([ind_A_i[elem] for elem in S_i])
         coresets.append(coreset_i)
@@ -827,8 +827,15 @@ def min_pairwise_distance_coreset(X, y, target_size, random_state=12227):
     return coreset_X, coreset_y
 
 def reconstruct_coreset(X_train, y_train, coreset_size):
-    # Generate a coreset with homogeneous class distribution
-    coreset = cs_construction_min_pairwise(np.array(X_train), np.array(y_train), len(np.unique(y_train))*[int(coreset_size/len(np.unique(y_train))**2)])
+    # Create class frequency list keeping the original proportions
+    unique_values, counts = np.unique(y_train, return_counts=True)
+    proportions = counts / len(y_train)
+    k = (proportions * coreset_size).astype(int)
+    # Ensure that at least one member of each class is included (might create coreset > coreset_size)
+    k = [1 if x == 0 else x for x in k]
+
+    # Generate a coreset
+    coreset = cs_construction_min_pairwise(np.array(X_train), np.array(y_train), k)
     
     # Flatten the list of sets to get the indices of the coreset points
     coreset_indices = [index for subset in coreset for index in subset]
