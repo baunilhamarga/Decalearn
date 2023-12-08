@@ -18,7 +18,7 @@ from Scripts import generate_coreset
 random_state = 12227
 
 def load_data(file_path, use_coreset=False, coreset_size=1024):
-    tmp = np.load(file_path)
+    tmp = np.load(file_path, allow_pickle=True)
     if use_coreset and len(tmp['X_train']) > coreset_size:
         X_train, y_train = generate_coreset.reconstruct_coreset(tmp['X_train'], tmp['y_train'], coreset_size)
     else:
@@ -263,7 +263,7 @@ def run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, time
         warnings.simplefilter("ignore")
 
         if default:
-            best_parameters = {'verbosity': -1, 'random_state': random_state}
+            best_parameters = {'num_leaves': 49, 'max_depth': 7, 'learning_rate': 0.1, 'n_estimators': 2000, 'min_child_weight': 1e-05, 'subsample': 0.2, 'verbose': -1, 'random_state': 12227}
         else:
             with open('logs/parameters.txt', 'a') as file:
                 print(f"Finding best parameters for LightGBM on {file_name}...", file=file)
@@ -316,14 +316,16 @@ if __name__ == '__main__':
         #'../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
         #'../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
         '../Datasets/Lucas/osha_train_test.npz',
+        #'../Datasets/AI_text/AI_text.npz',
+        #'../Datasets/CSI/dataset_csi.npz',
     ]
 
     for file_path in file_paths:
         X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=False)
-        
+
         # Run XGBoost
         run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
-        
+    
         # Run LightGBM
         run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
 
