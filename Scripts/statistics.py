@@ -48,5 +48,5 @@ def print_statistics(df, classification=False, check_content=False):
     print(f"Test size: {test_size} ({test_size_percentage:.0f}%)")
 
 if __name__ == '__main__':
-    data = np.load('/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz')
+    data = np.load('/home/baunilha/Repositories/Decalearn/Datasets/AI_text/AI_text.npz', allow_pickle=True)
     print_statistics(data, check_content=True, classification=True)
