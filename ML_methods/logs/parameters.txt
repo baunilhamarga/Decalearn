@@ -22,3 +22,8 @@ Finding best parameters for LightGBM on FaciesClassificationYananGasField.npz...
 Best Parameters: {'num_leaves': 49, 'max_depth': 7, 'learning_rate': 0.1, 'n_estimators': 2000, 'min_child_weight': 1e-05, 'subsample': 0.2, 'verbose': -1, 'random_state': 12227}
 Best Accuracy: 0.9552238805970149
 Time elapsed to find Best Parameters: 135936.3396668434s
+
+Finding best parameters for XGBoost on osha_train_test.npz...
+Best Parameters: {'learning_rate': 0.0001, 'max_depth': 10, 'subsample': 1, 'colsample_bytree': 1, 'colsample_bylevel': 0.2, 'min_child_weight': 1.0, 'n_estimators': 4000, 'random_state': 12227}
+Best Accuracy: 0.8289085545722714
+Time elapsed to find Best Parameters: 473830.4534139633s
