@@ -846,7 +846,39 @@ def reconstruct_coreset(X_train, y_train, coreset_size):
 
     return new_X_train, new_y_train
 
+def load_data(file_path, use_coreset=False, coreset_size=1024):
+    tmp = np.load(file_path, allow_pickle=True)
+    if use_coreset and len(tmp['X_train']) > coreset_size:
+        X_train, y_train = reconstruct_coreset(tmp['X_train'], tmp['y_train'], coreset_size)
+    else:
+        X_train = tmp['X_train']
+        y_train = tmp['y_train']
+    X_test = tmp['X_test']
+    y_test = tmp['y_test']
+    return X_train, y_train, X_test, y_test
+
+def save_coreset():
+    # Insert the file paths of classification datasets
+    file_paths = [
+        #'../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
+        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        #'../Datasets/Lucas/osha_train_test.npz',
+        #'../Datasets/AI_text/AI_text.npz',
+        #'../Datasets/CSI/dataset_csi.npz',
+    ]
+
+    for file_path in file_paths:
+        for size in [2**k for k in range(7, 11)]:
+            X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=True, coreset_size=size)
+            np.savez_compressed(f'FaciesClassificationYananGasField_coreset_{size}.npz', X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test)
+
+
 if __name__ == '__main__':
+
+    save_coreset()
+
+    exit(0)
+
     np.random.seed(12227)
     
     # Random X_train and y_train

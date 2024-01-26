@@ -109,14 +109,14 @@ def run_tabpfn(file_path, X_train, y_train, X_test, y_test, default=True, timeou
 if __name__ == '__main__':
     file_paths = [
         #'../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
-        #'../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
         #'../Datasets/Multimodal Human Action/data/USCHAD.npz',
         #'../Datasets/Multimodal Human Action/data/WHARF.npz',
         #'../Datasets/Multimodal Human Action/data/UTD-MHAD1_1s.npz',
         #'../Datasets/Lucas/osha_train_test.npz',
-        '../Datasets/AI_text/AI_text.npz',
+        #'../Datasets/AI_text/AI_text.npz',
     ]
     for file_path in file_paths:
-        X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=True, coreset_size=1024)
+        X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=True, coreset_size=128)
         run_tabpfn(file_path, X_train, y_train, X_test, y_test, default=False, timeout=False, verbose=True, timeout_seconds=10)
 

@@ -233,6 +233,7 @@ def run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, timeo
 
     if default:
         best_parameters = {'random_state': random_state}
+        #best_parameters = {'learning_rate': 1.0, 'max_depth': 10, 'subsample': 1, 'colsample_bytree': 1, 'colsample_bylevel': 1, 'min_child_weight': 0.001, 'n_estimators': 4000, 'random_state': 12227} #facies
     else:
         with open('logs/parameters.txt', 'a') as file:
             print(f"Finding best parameters for XGBoost on {file_name}...", file=file)
@@ -293,6 +294,7 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
 
         if default:
             best_parameters = {'verbose': 0, 'random_state': random_state}
+            best_parameters = {'verbose':0,'learning_rate':0.1,'random_state': 12227} #facies
         else:
             with open('logs/parameters.txt', 'a') as file:
                 print(f"Finding best parameters for CatBoost on {file_name}...", file=file)
@@ -314,20 +316,22 @@ if __name__ == '__main__':
     # Insert the file paths of classification datasets
     file_paths = [
         #'../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
-        #'../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
-        '../Datasets/Lucas/osha_train_test.npz',
+        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        #'../Datasets/Lucas/osha_train_test.npz',
         #'../Datasets/AI_text/AI_text.npz',
         #'../Datasets/CSI/dataset_csi.npz',
     ]
 
     for file_path in file_paths:
-        X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=False)
+        for size in [2**k for k in range(7, 11)]:
+            print(f'\nTesting a core of {size} samples...')
+            X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=True, coreset_size=size)
 
-        # Run XGBoost
-        run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
-    
-        # Run LightGBM
-        run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
+            # Run XGBoost
+            run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
+        
+            # Run LightGBM
+            run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
 
-        # Run CatBoost
-        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
+            # Run CatBoost
+            run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
