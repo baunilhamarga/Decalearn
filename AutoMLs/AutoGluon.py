@@ -1,48 +1,30 @@
 from autogluon.tabular import TabularPredictor
 import numpy as np
-import random
-import copy
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-from sklearn import preprocessing
-from sklearn.decomposition import PCA
-from pprint import pprint
-from sklearn.preprocessing import StandardScaler
-
-import autokeras as ak
-import tensorflow as tf
+import pandas as pd
 
 
 if __name__ == '__main__':
-    random_state = 12227
+    random_state = 12227 # AutoGluon doesn't let us change its seed, it uses seed 0 at every opportunity
 
-    tmp = np.load('/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField_coreset_1024.npz')
+    tmp = np.load('../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz')
     custom_project_name = 'AutoKeras/Facies_core'
 
-    X_train = tmp['X_train']
-    y_train = tmp['y_train']
-    X_test = tmp['X_test']
-    y_test = tmp['y_test']
+    X_train = pd.DataFrame(tmp['X_train'])
+    y_train = pd.DataFrame(tmp['y_train'], columns=['target'])
+    X_test = pd.DataFrame(tmp['X_test'])
+    y_test = pd.DataFrame(tmp['y_test'], columns=['target'])
 
-    n_classes = len(np.unique(y_train))
+    train_data = pd.concat([X_train, y_train], axis=1)
+    test_data = pd.concat([X_test, y_test], axis=1)
 
-    le = preprocessing.LabelBinarizer()
-    y_train = le.fit_transform(y_train)
-    y_test = le.fit_transform(y_test)
+    label = 'target'
+    time_limit = 133200  # 37h in seconds
+    metric = 'accuracy'  # evaluation metric
+    # Recommended settings for maximizing predictive performance
+    predictor = TabularPredictor(label, eval_metric=metric).fit(train_data, time_limit=time_limit, presets='best_quality')
 
-    scaler = StandardScaler()
-    X_train = scaler.fit_transform(X_train)
-    X_test = scaler.transform(X_test)
+    y_pred = predictor.predict(test_data)
 
+    print(predictor.evaluate(test_data))
 
-    model = ak.StructuredDataClassifier(overwrite=True, max_trials=10, project_name=custom_project_name)
-
-    model.fit(tf.data.Dataset.from_tensor_slices((X_train.astype(str), y_train)), epochs=40)
-
-    y_pred = model.predict(tf.data.Dataset.from_tensor_slices((X_test).astype(str)))
-
-    acc_test = accuracy_score(np.argmax(y_test, axis=1), np.argmax(y_pred, axis=1))
-
-    print('Testing Accuracy [{:.4f}]'.format(acc_test))
-predictor = TabularPredictor(label="class").fit("train.csv")
-predictions = predictor.predict("test.csv")
+    print(predictor.leaderboard(test_data))
