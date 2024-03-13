@@ -15,8 +15,8 @@ import tensorflow as tf
 if __name__ == '__main__':
     random_state = 12227
 
-    tmp = np.load('/home/baunilha/Repositories/Decalearn/Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField_coreset_1024.npz')
-    custom_project_name = 'AutoKeras/Facies_core'
+    tmp = np.load('../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz')
+    custom_project_name = 'AutoKeras/Facies'
 
     X_train = tmp['X_train']
     y_train = tmp['y_train']
