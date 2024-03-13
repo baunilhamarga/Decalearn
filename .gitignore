@@ -16,6 +16,7 @@ AutoMLs/AutoFedot/
 AutoMLs/AutoKeras/
 AutoMLs/AutogluonModels
 AutoMLs/Autogluon
+AutoMLs/AutoGluon
 
 # VScode
 .vscode
