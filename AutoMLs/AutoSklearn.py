@@ -14,7 +14,7 @@ from tensorflow.keras import layers
 if __name__ == '__main__':
     random_state = 12227
 
-    dataset_filepath = '/home/baunilha/Repositories/Decalearn/Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz'
+    dataset_filepath = '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz'
     tmp = np.load(dataset_filepath)
 
     X_train = tmp['X_train']
