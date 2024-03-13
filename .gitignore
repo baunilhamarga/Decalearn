@@ -14,6 +14,7 @@ ML_methods/catboost_info/
 AutoMLs/AutoSklearn/
 AutoMLs/AutoFedot/
 AutoMLs/AutoKeras/
+AutoMLs/AutogluonModels
 
 # VScode
 .vscode
