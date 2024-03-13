@@ -17,11 +17,12 @@ if __name__ == '__main__':
     train_data = pd.concat([X_train, y_train], axis=1)
     test_data = pd.concat([X_test, y_test], axis=1)
 
-    label = 'target'
+    label = 'target' # Target to predict
     time_limit = 133200  # 37h in seconds
-    metric = 'accuracy'  # evaluation metric
+    metric = 'accuracy'  # Evaluation metric
+    path='AutoGluon/Facies_37h' # Save directory
     # Recommended settings for maximizing predictive performance
-    predictor = TabularPredictor(label, eval_metric=metric, path = 'Autogluon/Facies_37h').fit(train_data, time_limit=time_limit, presets='best_quality')
+    predictor = TabularPredictor(label, eval_metric=metric, path=path, log_to_file=True).fit(train_data, time_limit=time_limit, presets='best_quality')
 
     y_pred = predictor.predict(test_data)
 
