@@ -21,7 +21,7 @@ if __name__ == '__main__':
     time_limit = 133200  # 37h in seconds
     metric = 'accuracy'  # evaluation metric
     # Recommended settings for maximizing predictive performance
-    predictor = TabularPredictor(label, eval_metric=metric).fit(train_data, time_limit=time_limit, presets='best_quality')
+    predictor = TabularPredictor(label, eval_metric=metric, path = 'Autogluon/Facies_37h').fit(train_data, time_limit=time_limit, presets='best_quality')
 
     y_pred = predictor.predict(test_data)
 
