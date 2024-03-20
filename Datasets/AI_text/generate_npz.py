@@ -11,35 +11,34 @@ from Scripts import statistics
 import warnings
 warnings.filterwarnings('ignore')
 
+import tensorflow as tf
 import tensorflow_hub as hub
 
-# Load the Universal Sentence Encoder
-embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder/4")
+import pandas as pd
+import numpy as np
+import tensorflow_hub as hub
 
 def preprocess_data(df):
-    # Dropping columns that are not significant
-    df = df[['text', 'prompt_name', 'label']]
 
-    # Dropping NaN
-    df = df.dropna()
+    # Load Universal Sentence Encoder from TensorFlow Hub
+    embed = hub.load("https://tfhub.dev/google/universal-sentence-encoder-large/5")
+    
+    # Transform text data into 512-dimensional float representation
+    def text_to_embedding(text):
+        embedding = embed([text])[0]
+        return embedding.numpy()
+    
+    # Apply transformation to each row in the DataFrame
+    df['text_embedding'] = df['text'].apply(text_to_embedding)
+    
+    # Create DataFrame with 512 columns from the embedding vectors
+    embedding_df = pd.DataFrame(df['text_embedding'].tolist(), columns=[f'feature_{i}' for i in range(512)])
+    
+    # Reset index of the original DataFrame to ensure proper alignment during concatenation
+    df.reset_index(drop=True, inplace=True)
 
-    # Function to get embeddings for each row in the 'text' column
-    def get_embeddings(text):
-        return embed([text]).numpy().tolist()[0]
-
-    # Overwrite the 'text' and 'prompt_name' columns with the embeddings
-    df['text'] = df['text'].apply(get_embeddings)
-    df['prompt_name'] = np.array(df['prompt_name'].apply(get_embeddings))
-
-    # Calculate the average embedding for each sample
-    def average_embedding(embeddings):
-        if not embeddings:
-            return np.zeros(len(embeddings[0]))  # Return zeros if embeddings is empty
-        return np.mean(embeddings, axis=0)
-
-    # Apply the average_embedding function to each row in the 'name' and 'prompt_name' columns
-    df['text'] = df['text'].apply(average_embedding)
-    df['prompt_name'] = df['prompt_name'].apply(average_embedding)
+    # Concatenate the new DataFrame with the label column
+    df = pd.concat([embedding_df, df['label']], axis=1)
 
     return df
 
