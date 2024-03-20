@@ -6,7 +6,16 @@ import pandas as pd
 if __name__ == '__main__':
     random_state = 12227 # AutoGluon doesn't let us change its seed, it uses seed 0 at every opportunity
 
-    tmp = np.load('../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz')
+    file_paths = [
+        '../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
+        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        '../Datasets/Lucas/osha_train_test.npz',
+        '../Datasets/AI_text/AI_text.npz',
+        '../Datasets/CSI/dataset_csi.npz',
+        '../Datasets/AI_text/AI_text.npz',
+    ]
+
+    tmp = np.load(file_paths[0])
 
     X_train = pd.DataFrame(tmp['X_train'])
     y_train = pd.DataFrame(tmp['y_train'], columns=['target'])
