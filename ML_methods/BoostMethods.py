@@ -264,7 +264,8 @@ def run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, time
         warnings.simplefilter("ignore")
 
         if default:
-            best_parameters = {'num_leaves': 49, 'max_depth': 7, 'learning_rate': 0.1, 'n_estimators': 2000, 'min_child_weight': 1e-05, 'subsample': 0.2, 'verbose': -1, 'random_state': 12227}
+            best_parameters = {'verbosity': -1, 'random_state': random_state}
+            #best_parameters = {'num_leaves': 49, 'max_depth': 7, 'learning_rate': 0.1, 'n_estimators': 2000, 'min_child_weight': 1e-05, 'subsample': 0.2, 'verbose': -1, 'random_state': 12227}
         else:
             with open('logs/parameters.txt', 'a') as file:
                 print(f"Finding best parameters for LightGBM on {file_name}...", file=file)
@@ -294,7 +295,7 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
 
         if default:
             best_parameters = {'verbose': 0, 'random_state': random_state}
-            best_parameters = {'verbose':0,'learning_rate':0.1,'random_state': 12227} #facies
+            #best_parameters = {'allow_writing_files': False, 'verbose': False, 'iterations': 6407, 'use_best_model': False, 'early_stopping_rounds': None, 'border_count': 25425, 'colsample_bylevel': 0.06267846249024994, 'l2_leaf_reg': 7.980471584955271, 'learning_rate': 0.23176336497082237, 'max_depth': 7, 'max_leaves': 31, 'min_data_in_leaf': 137337.0, 'random_state': random_state}  # Results from MAHD AutoFedot 37h
         else:
             with open('logs/parameters.txt', 'a') as file:
                 print(f"Finding best parameters for CatBoost on {file_name}...", file=file)
@@ -315,23 +316,21 @@ def run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, time
 if __name__ == '__main__':
     # Insert the file paths of classification datasets
     file_paths = [
-        #'../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
-        '../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
+        '../Datasets/Multimodal Human Action/data/UTD-MHAD2_1s.npz',
+        #'../Datasets/GeologyTasks/FaciesClassification/FaciesClassificationYananGasField.npz',
         #'../Datasets/Lucas/osha_train_test.npz',
         #'../Datasets/AI_text/AI_text.npz',
         #'../Datasets/CSI/dataset_csi.npz',
     ]
 
     for file_path in file_paths:
-        for size in [2**k for k in range(7, 11)]:
-            print(f'\nTesting a core of {size} samples...')
-            X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=True, coreset_size=size)
+        X_train, y_train, X_test, y_test = load_data(file_path, use_coreset=False)
 
-            # Run XGBoost
-            run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
-        
-            # Run LightGBM
-            run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
+        # Run XGBoost
+        run_XGBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
+    
+        # Run LightGBM
+        run_LightGBM(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
 
-            # Run CatBoost
-            run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
+        # Run CatBoost
+        run_CatBoost(file_path, X_train, y_train, X_test, y_test, default=True, verbose=True, timeout=False, timeout_seconds=10)
