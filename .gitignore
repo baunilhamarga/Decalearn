@@ -1,5 +1,9 @@
 .~lock.*#
 
+# Temporary files
+temp
+tmp
+
 # Scripts .csv outputs
 Scripts/*.csv
 
