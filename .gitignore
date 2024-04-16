@@ -11,6 +11,7 @@ Scripts/*.csv
 data
 Datasets
 new_datasets
+Data
 
 # CatBoost results
 ML_methods/catboost_info/
